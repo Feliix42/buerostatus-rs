@@ -8,7 +8,7 @@ This is work in progress, more information is coming soon. :)
 
 - [ ] Write some tests
 - [x] Add travis
-- [ ] Documentation
+- [x] Documentation
 - [ ] Maybe add function to get exact light value
 
 ## License
