@@ -3,7 +3,7 @@
 //!
 //! # Example
 //! ```
-//!  use buerostatus::*;
+//! # use buerostatus::*;
 //! if let Ok(is_open) = get_buerostatus() {
 //!     if is_open { println!("Someone's inside!"); }
 //!     else { println!("No one is there..."); }
