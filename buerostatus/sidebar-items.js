@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ApiError","A set of errors that may occur during the API call."]],"fn":[["get_buerostatus","Gets the buerostatus from ifsr.de."]]});
