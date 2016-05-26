@@ -1,5 +1,5 @@
 //! This crate is a small wrapper around the [buerostatus](https://github.com/fsr/buerostatus) API
-//! of the [@fsr](https://github.com/fsr) that tells you whether someone is in the office or not.
+//! of the [@fsr](https://github.com/fsr) that tells you whether someone is in our office or not.
 //!
 //! # Example
 //! ```
@@ -15,7 +15,6 @@
 //!
 //! The function `get_buerostatus()` offers a precise error message in case of an error. See the enum
 //! `ApiError` for more information.
-//! 
 
 extern crate hyper;
 
@@ -66,11 +65,11 @@ pub fn get_buerostatus() -> Result<bool, ApiError> {
         return Err(ApiError::StatusNotOk(res.status));
     }
 
-    let mut onezero = String::new();
-    res.read_to_string(&mut onezero).unwrap();
+    let mut message = String::new();
+    res.read_to_string(&mut message).unwrap();
 
     // Check the content of the response
-    match onezero.as_ref() {
+    match message.as_ref() {
         "0" => Ok(false),
         "1" => Ok(true),
         _   => Err(ApiError::WrongMessage), // just in case, the server _should_ always return 1 or 0.
