@@ -1,11 +1,11 @@
-extern crate anybar;
+extern crate buerostatus;
 
-use anybar::*;
+use buerostatus::*;
 
 fn main() {
     println!("Knock knock!");
 
-    if let Ok(is_open) 0 get_buerostatus() {
+    if let Ok(is_open) = get_buerostatus() {
         if is_open { println!("Who's there?"); }
         else { println!("..."); }
     }
