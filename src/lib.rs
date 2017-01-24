@@ -18,8 +18,6 @@
 
 extern crate reqwest;
 
-//use reqwest;
-use reqwest::Error;
 use reqwest::StatusCode;
 use std::io::Read;
 
@@ -27,7 +25,7 @@ use std::io::Read;
 #[derive(Debug)]
 pub enum ApiError {
     /// An error originating from the `reqwest` crate such as "No Internet connection".
-    Network(reqwest::HyperError),
+    Network(reqwest::Error),
     /// The Return Code of the website is not _200_.
     StatusNotOk(reqwest::StatusCode),
     /// The API call delivered a wrong message.
@@ -55,9 +53,8 @@ pub fn get_buerostatus() -> Result<bool, ApiError> {
 
     // Make the request to ifsr.de
     let mut res = match reqwest::get(url) {
-        Ok(resp)                => resp,
-        Err(Error::Http(err))   => return Err(ApiError::Network(err)),
-        Err(_)                  => return Err(ApiError::WrongMessage),     // TODO: Replace me!
+        Ok(resp)    => resp,
+        Err(err)    => return Err(ApiError::Network(err))
     };
 
     // Check if response from Server is Status 200.
