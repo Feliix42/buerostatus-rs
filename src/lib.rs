@@ -16,20 +16,20 @@
 //! The function `get_buerostatus()` offers a precise error message in case of an error. See the enum
 //! `ApiError` for more information.
 
-extern crate hyper;
+extern crate reqwest;
 
-use hyper::Client;
-use hyper::status::StatusCode;
-use hyper::error::Error as HyperError;
+//use reqwest;
+use reqwest::Error;
+use reqwest::StatusCode;
 use std::io::Read;
 
 /// A set of errors that may occur during the API call.
 #[derive(Debug)]
 pub enum ApiError {
-    /// An error originating from the `hyper` crate such as "No Internet connection".
-    Network(HyperError),
+    /// An error originating from the `reqwest` crate such as "No Internet connection".
+    Network(reqwest::HyperError),
     /// The Return Code of the website is not _200_.
-    StatusNotOk(hyper::status::StatusCode),
+    StatusNotOk(reqwest::StatusCode),
     /// The API call delivered a wrong message.
     WrongMessage
 }
@@ -51,18 +51,18 @@ pub enum ApiError {
 /// }
 /// ```
 pub fn get_buerostatus() -> Result<bool, ApiError> {
-    let client = Client::new();
     let url = "https://www.ifsr.de/buerostatus/output.php";
 
     // Make the request to ifsr.de
-    let mut res = match client.get(url).send() {
-        Ok(resp) => resp,
-        Err(err)   => return Err(ApiError::Network(err)),
+    let mut res = match reqwest::get(url) {
+        Ok(resp)                => resp,
+        Err(Error::Http(err))   => return Err(ApiError::Network(err)),
+        Err(_)                  => return Err(ApiError::WrongMessage),     // TODO: Replace me!
     };
 
     // Check if response from Server is Status 200.
-    if res.status != StatusCode::Ok {
-        return Err(ApiError::StatusNotOk(res.status));
+    if *res.status() != StatusCode::Ok {
+        return Err(ApiError::StatusNotOk(*res.status()));
     }
 
     let mut message = String::new();

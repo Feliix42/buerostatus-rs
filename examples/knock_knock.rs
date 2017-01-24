@@ -7,6 +7,6 @@ fn main() {
 
     if let Ok(is_open) = get_buerostatus() {
         if is_open { println!("Who's there?"); }
-        else { println!("..."); }
+        else { println!("... No one?"); }
     }
 }
