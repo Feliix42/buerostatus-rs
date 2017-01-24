@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     
     
@@ -43,21 +44,23 @@
 
     <section id='main' class="content enum">
 <h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>buerostatus</a>::<wbr><a class='enum' href=''>ApiError</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-9' class='srclink' href='../src/buerostatus/src/lib.rs.html#28-35' title='goto source code'>[src]</a></span></h1>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-13' class='srclink' href='../src/buerostatus/src/lib.rs.html#26-33' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum ApiError {
-    Network(<a class='enum' href='../hyper/error/enum.Error.html' title='hyper::error::Error'>HyperError</a>),
+    Network(<a class='enum' href='../reqwest/error/enum.Error.html' title='reqwest::error::Error'>Error</a>),
     StatusNotOk(<a class='enum' href='../hyper/status/enum.StatusCode.html' title='hyper::status::StatusCode'>StatusCode</a>),
     WrongMessage,
 }</pre><div class='docblock'><p>A set of errors that may occur during the API call.</p>
 </div><h2 class='variants'>Variants</h2>
-<table class='variants_table'><tr><td id='variant.Network'><code>Network</code></td><td><div class='docblock'><p>An error originating from the <code>hyper</code> crate such as &quot;No Internet connection&quot;.</p>
-</div></td><td></td></tr><tr><td id='variant.StatusNotOk'><code>StatusNotOk</code></td><td><div class='docblock'><p>The Return Code of the website is not <em>200</em>.</p>
-</div></td><td></td></tr><tr><td id='variant.WrongMessage'><code>WrongMessage</code></td><td><div class='docblock'><p>The API call delivered a wrong message.</p>
-</div></td><td></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='enum' href='../buerostatus/enum.ApiError.html' title='buerostatus::ApiError'>ApiError</a></code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#method.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
-</div></section>
+<span id='variant.Network' class='variant'><span id='Network.v' class='invisible'><code>Network(<a class='enum' href='../reqwest/error/enum.Error.html' title='reqwest::error::Error'>Error</a>)</code></span></span><div class='docblock'><p>An error originating from the <code>reqwest</code> crate such as &quot;No Internet connection&quot;.</p>
+</div><span id='variant.StatusNotOk' class='variant'><span id='StatusNotOk.v' class='invisible'><code>StatusNotOk(<a class='enum' href='../hyper/status/enum.StatusCode.html' title='hyper::status::StatusCode'>StatusCode</a>)</code></span></span><div class='docblock'><p>The Return Code of the website is not <em>200</em>.</p>
+</div><span id='variant.WrongMessage' class='variant'><span id='WrongMessage.v' class='invisible'><code>WrongMessage</code></span></span><div class='docblock'><p>The API call delivered a wrong message.</p>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='enum' href='../buerostatus/enum.ApiError.html' title='buerostatus::ApiError'>ApiError</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-19' class='srclink' href='../src/buerostatus/src/lib.rs.html#25' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class='method'><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -80,6 +83,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -111,11 +116,9 @@
     <script>
         window.rootPath = "../";
         window.currentCrate = "buerostatus";
-        window.playgroundUrl = "";
     </script>
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
     <script defer src="../search-index.js"></script>
 </body>
 </html>

@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
 
     
     
@@ -115,9 +116,6 @@
 <span id="72">72</span>
 <span id="73">73</span>
 <span id="74">74</span>
-<span id="75">75</span>
-<span id="76">76</span>
-<span id="77">77</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! This crate is a small wrapper around the [buerostatus](https://github.com/fsr/buerostatus) API</span>
 <span class='doccomment'>//! of the [@fsr](https://github.com/fsr) that tells you whether someone is in our office or not.</span>
@@ -137,20 +135,18 @@
 <span class='doccomment'>//! The function `get_buerostatus()` offers a precise error message in case of an error. See the enum</span>
 <span class='doccomment'>//! `ApiError` for more information.</span>
 
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>hyper</span>;
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>reqwest</span>;
 
-<span class='kw'>use</span> <span class='ident'>hyper</span>::<span class='ident'>Client</span>;
-<span class='kw'>use</span> <span class='ident'>hyper</span>::<span class='ident'>status</span>::<span class='ident'>StatusCode</span>;
-<span class='kw'>use</span> <span class='ident'>hyper</span>::<span class='ident'>error</span>::<span class='ident'>Error</span> <span class='kw'>as</span> <span class='ident'>HyperError</span>;
+<span class='kw'>use</span> <span class='ident'>reqwest</span>::<span class='ident'>StatusCode</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::<span class='ident'>Read</span>;
 
 <span class='doccomment'>/// A set of errors that may occur during the API call.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>ApiError</span> {
-    <span class='doccomment'>/// An error originating from the `hyper` crate such as &quot;No Internet connection&quot;.</span>
-    <span class='ident'>Network</span>(<span class='ident'>HyperError</span>),
+    <span class='doccomment'>/// An error originating from the `reqwest` crate such as &quot;No Internet connection&quot;.</span>
+    <span class='ident'>Network</span>(<span class='ident'>reqwest</span>::<span class='ident'>Error</span>),
     <span class='doccomment'>/// The Return Code of the website is not _200_.</span>
-    <span class='ident'>StatusNotOk</span>(<span class='ident'>hyper</span>::<span class='ident'>status</span>::<span class='ident'>StatusCode</span>),
+    <span class='ident'>StatusNotOk</span>(<span class='ident'>reqwest</span>::<span class='ident'>StatusCode</span>),
     <span class='doccomment'>/// The API call delivered a wrong message.</span>
     <span class='ident'>WrongMessage</span>
 }
@@ -172,18 +168,17 @@
 <span class='doccomment'>/// }</span>
 <span class='doccomment'>/// ```</span>
 <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>get_buerostatus</span>() <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>bool</span>, <span class='ident'>ApiError</span><span class='op'>&gt;</span> {
-    <span class='kw'>let</span> <span class='ident'>client</span> <span class='op'>=</span> <span class='ident'>Client</span>::<span class='ident'>new</span>();
     <span class='kw'>let</span> <span class='ident'>url</span> <span class='op'>=</span> <span class='string'>&quot;https://www.ifsr.de/buerostatus/output.php&quot;</span>;
 
     <span class='comment'>// Make the request to ifsr.de</span>
-    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>res</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>client</span>.<span class='ident'>get</span>(<span class='ident'>url</span>).<span class='ident'>send</span>() {
-        <span class='prelude-val'>Ok</span>(<span class='ident'>resp</span>) <span class='op'>=&gt;</span> <span class='ident'>resp</span>,
-        <span class='prelude-val'>Err</span>(<span class='ident'>err</span>)   <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>ApiError</span>::<span class='ident'>Network</span>(<span class='ident'>err</span>)),
+    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>res</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>reqwest</span>::<span class='ident'>get</span>(<span class='ident'>url</span>) {
+        <span class='prelude-val'>Ok</span>(<span class='ident'>resp</span>)    <span class='op'>=&gt;</span> <span class='ident'>resp</span>,
+        <span class='prelude-val'>Err</span>(<span class='ident'>err</span>)    <span class='op'>=&gt;</span> <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>ApiError</span>::<span class='ident'>Network</span>(<span class='ident'>err</span>))
     };
 
     <span class='comment'>// Check if response from Server is Status 200.</span>
-    <span class='kw'>if</span> <span class='ident'>res</span>.<span class='ident'>status</span> <span class='op'>!=</span> <span class='ident'>StatusCode</span>::<span class='prelude-val'>Ok</span> {
-        <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>ApiError</span>::<span class='ident'>StatusNotOk</span>(<span class='ident'>res</span>.<span class='ident'>status</span>));
+    <span class='kw'>if</span> <span class='op'>*</span><span class='ident'>res</span>.<span class='ident'>status</span>() <span class='op'>!=</span> <span class='ident'>StatusCode</span>::<span class='prelude-val'>Ok</span> {
+        <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>ApiError</span>::<span class='ident'>StatusNotOk</span>(<span class='op'>*</span><span class='ident'>res</span>.<span class='ident'>status</span>()));
     }
 
     <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>message</span> <span class='op'>=</span> <span class='ident'>String</span>::<span class='ident'>new</span>();
@@ -191,8 +186,8 @@
 
     <span class='comment'>// Check the content of the response</span>
     <span class='kw'>match</span> <span class='ident'>message</span>.<span class='ident'>as_ref</span>() {
-        <span class='string'>&quot;0&quot;</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='boolval'>false</span>),
-        <span class='string'>&quot;1&quot;</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='boolval'>true</span>),
+        <span class='string'>&quot;0&quot;</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='bool-val'>false</span>),
+        <span class='string'>&quot;1&quot;</span> <span class='op'>=&gt;</span> <span class='prelude-val'>Ok</span>(<span class='bool-val'>true</span>),
         _   <span class='op'>=&gt;</span> <span class='prelude-val'>Err</span>(<span class='ident'>ApiError</span>::<span class='ident'>WrongMessage</span>), <span class='comment'>// just in case, the server _should_ always return 1 or 0.</span>
     }
 }
@@ -220,6 +215,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
@@ -251,11 +248,9 @@
     <script>
         window.rootPath = "../../../";
         window.currentCrate = "buerostatus";
-        window.playgroundUrl = "";
     </script>
     <script src="../../../jquery.js"></script>
     <script src="../../../main.js"></script>
-    
     <script defer src="../../../search-index.js"></script>
 </body>
 </html>
